@@ -1,0 +1,6 @@
+# Keep deploy-only project files out of the public asset manifest.
+.git/
+.github/
+.assetsignore
+wrangler.jsonc
+README.md
