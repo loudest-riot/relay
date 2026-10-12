@@ -1,20 +1,36 @@
 # Relay Network · nøfuture
 
-Static source for relay.loudestriot.com. Updated 12 October 2026.
+Static source for the Hines Park Relay site at **relay.loudestriot.com**.
 
-## October update
+## Site
 
 - Navy and cobalt-blue palette with cool pale text.
-- Image-filled RELAY NETWORK lettering using CSS background clipping.
-- Six existing compositions, plus three cover-art previews: Newburgh Afterimage, Outre Drive, and SLY PILOT.
-- Private preview URLs are not included. New artwork is not labeled as released music.
-- Mobile layout, tap-to-expand artwork, keyboard focus, and reduced-motion support.
-- Signal Glyph links to go.loudestriot.com.
+- Image-filled RELAY NETWORK lettering: the artwork shows through the title.
+- Six existing compositions, plus current artwork previews for Newburgh Afterimage, Outre Drive, and SLY PILOT.
+- New cover previews are *not* described as released music or linked to invented listening URLs.
+- iPhone-friendly responsive layout, tap-to-expand artwork, keyboard focus, and reduced-motion support.
+- Official brand imagery and Signal Glyph link to go.loudestriot.com.
 
-## Cloudflare Pages
+## Cloudflare Workers Git deployment
 
-Connect this repository to a Git-integrated Pages project. Production branch: main. Framework preset: None. This is buildless static HTML; output directory: repository root (.).
+This repository is connected to the **relay** Cloudflare Worker with production branch `main`.
 
-If the current Relay Pages project uses Direct Upload, inspect the project before changing the deployment. A new Git-integrated project may be needed. Preview first, then move relay.loudestriot.com to the verified deployment. Do not delete the old project first.
+- Build command: **leave blank**. There is no framework or compilation.
+- Deploy command: `npx wrangler deploy` (the Cloudflare default).
+- Root directory: repository root.
+- `wrangler.jsonc` instructs Cloudflare to serve the static site directly from this repository.
+- `.assetsignore` prevents publishing repository metadata as web assets.
+- `_redirects` keeps the four legacy Ditto listening routes. Verify those destinations periodically.
 
-The existing Ditto redirects are preserved in _redirects. They still need a live listening-link check before launch. New cover previews have no invented listening URLs.
+Any push to `main` should trigger a Cloudflare Worker build and deployment. See the Cloudflare **Deployments** tab for its status. A commit alone does not prove that a deployment succeeded.
+
+If the Worker doesn't yet own `relay.loudestriot.com`, add the domain under **Worker > Settings > Domains & Routes** after verifying the workers.dev preview. Avoid removing a previously live route before confirming the replacement.
+
+## Contents
+
+- `index.html`: responsive single-page gallery and artwork viewer.
+- `assets/`: artwork, hero image, official logos, and Signal Glyph.
+- `_redirects`: legacy listening links.
+- `wrangler.jsonc`: Workers static-assets configuration.
+
+Updated 12 October 2026.
