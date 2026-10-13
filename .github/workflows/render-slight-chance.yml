@@ -1,0 +1,35 @@
+name: Render Slight Chance of Misery Canvas
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/render-slight-chance.yml'
+      - 'canvas/make_slight_chance.py'
+permissions:
+  contents: write
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install render dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y ffmpeg >/dev/null
+          python -m pip install --quiet pillow numpy
+      - name: Render real cover and Hines layers
+        run: python canvas/make_slight_chance.py
+      - name: Validate Spotify Canvas
+        run: |
+          ffprobe -v error -show_entries stream=codec_name,width,height,pix_fmt -show_entries format=duration,size -of default=noprint_wrappers=1 canvas/export/slight-chance-of-misery-canvas.mp4
+          test -s canvas/export/slight-chance-of-misery-canvas.mp4
+      - name: Publish video file
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add canvas/export/slight-chance-of-misery-canvas.mp4
+          git diff --cached --quiet || (git commit -m 'Export Slight Chance of Misery Spotify Canvas' && git push)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: slight-chance-of-misery-canvas
+          path: canvas/export/slight-chance-of-misery-canvas.mp4
