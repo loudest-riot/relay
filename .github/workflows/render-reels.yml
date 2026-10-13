@@ -27,8 +27,8 @@ jobs:
         run: python reels/render_reels.py
       - name: Verify video metadata
         run: |
-          ffprobe -v error -show_entries stream=width,height,codec_name -of default=noprint_wrappers=1 reels/exports/01-seven-transmissions.mp4
-          ffprobe -v error -show_entries stream=width,height,codec_name -of default=noprint_wrappers=1 reels/exports/02-darker-signal.mp4
+          ffmpeg -v error -i reels/exports/01-seven-transmissions.mp4 -frames:v 1 -f null -
+          ffmpeg -v error -i reels/exports/02-darker-signal.mp4 -frames:v 1 -f null -
       - uses: actions/upload-artifact@v4
         with:
           name: nfuture-instagram-reels
