@@ -1,0 +1,40 @@
+name: Render IG Reels
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'reels/render_reels.py'
+      - '.github/workflows/render-reels.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pillow
+      - name: Render 1080x1920 H264 Reels
+        run: python reels/render_reels.py
+      - name: Verify video metadata
+        run: |
+          ffprobe -v error -show_entries stream=width,height,codec_name -of default=noprint_wrappers=1 reels/exports/01-seven-transmissions.mp4
+          ffprobe -v error -show_entries stream=width,height,codec_name -of default=noprint_wrappers=1 reels/exports/02-darker-signal.mp4
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nfuture-instagram-reels
+          path: reels/exports/*.mp4
+          retention-days: 30
+      - name: Commit exports
+        run: |
+          git config user.name "loudest-riot-actions"
+          git config user.email "actions@users.noreply.github.com"
+          git add reels/exports/*.mp4
+          if ! git diff --cached --quiet; then
+            git commit -m "Export two Instagram promo reels"
+            git push
+          fi
