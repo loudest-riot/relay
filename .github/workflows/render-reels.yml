@@ -17,7 +17,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: pip install pillow
+      - run: pip install pillow imageio-ffmpeg
+      - name: Install ffmpeg executable
+        run: |
+          mkdir -p "$HOME/bin"
+          ln -sf "$(python -c 'import imageio_ffmpeg; print(imageio_ffmpeg.get_ffmpeg_exe())')" "$HOME/bin/ffmpeg"
+          echo "$HOME/bin" >> "$GITHUB_PATH"
       - name: Render 1080x1920 H264 Reels
         run: python reels/render_reels.py
       - name: Verify video metadata
