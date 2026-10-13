@@ -162,6 +162,6 @@ if __name__=="__main__":
     render("02-darker-signal.mp4",[
         ("misery.jpg","THE WEATHER TURNS","SLIGHT CHANCE OF MISERY"),
         ("crossed-by-stars.jpg","THE STARS REMAIN","CROSSED BY STARS"),
-        ("dead-stars.jpg","THE SIGNAL CONTINUES","BEYOND THE TREELINE"),
+        ("hines-001.jpg","THE SIGNAL CONTINUES","THROUGH THE WOODS"),
         ("hines-002.jpg","THE LANDSCAPE MOVES","FOUR SPOTIFY CANVASES LIVE")
     ],("misery.jpg","THE DARKER SIGNAL","SEVEN COMPOSITIONS","ONE COLLECTION"),3.0,3.0)
