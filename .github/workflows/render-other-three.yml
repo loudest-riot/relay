@@ -1,0 +1,35 @@
+name: Export Three Spotify Canvas Videos
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'canvas/render_other_three.py'
+      - '.github/workflows/render-other-three.yml'
+permissions:
+  contents: read
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Python dependencies and ffmpeg
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y ffmpeg >/dev/null
+          python -m pip install --quiet pillow numpy opencv-python-headless
+      - name: Render three motion Canvases
+        run: python -u canvas/render_other_three.py
+      - name: Verify video formats
+        run: |
+          for f in canvas/export/four-song/*.mp4; do
+            echo "VALIDATING $f"
+            ffprobe -v error -show_entries stream=codec_name,width,height,pix_fmt -show_entries format=duration,size -of default=noprint_wrappers=1 "$f"
+            test -s "$f"
+          done
+          test "$(find canvas/export/four-song -name '*.mp4' | wc -l)" -eq 3
+      - uses: actions/upload-artifact@v4
+        with:
+          name: three-canvas-mp4-exports
+          path: canvas/export/four-song/*.mp4
+          retention-days: 30
