@@ -19,8 +19,7 @@
 .signup .honeypot{position:absolute!important;left:-10000px!important;width:1px!important;height:1px!important;overflow:hidden!important}
 @media(max-width:800px){.signup{grid-template-columns:1fr;gap:20px;padding:30px;margin:18px 0 48px}.signup h2{font-size:clamp(32px,7vw,47px)}}
 @media(max-width:640px) and (orientation:portrait){
-  .nav a[href="#new-artwork"]{display:none}
-  .signup{margin:15px 18px 40px;padding:26px 17px;display:block;border-color:#416992}
+  .signup{margin:15px 0 40px;padding:26px 17px;display:block;border-color:#416992}
   .signup::after{background:linear-gradient(180deg,rgba(4,15,35,.9),rgba(4,20,41,.87))}
   .signup h2{font-size:clamp(32px,10vw,46px);margin:12px 0}
   .signup .signup-copy{font-size:13px;line-height:1.6;margin:0 0 22px}
